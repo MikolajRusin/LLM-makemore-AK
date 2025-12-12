@@ -40,7 +40,7 @@ The implementation is heavily inspired by the educational materials and mini-pro
 
 ---
 
-## ⚙️Model Architecture
+## 🔢Model Architecture
 
 The model is an extremely simple, single-layer neural network that serves a replacement for the traditional count-based Trigram matrix.
 
@@ -67,9 +67,7 @@ The core of the model is a single weight matrix $W$.
     1.  **Logits:** $L = X_{\text{enc}} \cdot W$
     2.  **Probabilities:** The logits $L$ are passed through the **Softmax** function to convert them into a probability distribution $\hat{P}$ over the 27 possible next characters.
 * **Loss Function:** The network is trained using the **Cross-Entropy Loss**, which is equivalent to the **Negative Log Likelihood (NLL)**.
-    $$
-    \text{Loss} = \text{NLL} + \lambda \sum W^2
-    $$
+    $\text{Loss} = \text{NLL} + \lambda \sum W^2$
     * A weight decay term ($\lambda = 0.001$) is added to the loss as a simple form of regularization to prevent overfitting.
 
 ---
