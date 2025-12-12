@@ -1,4 +1,4 @@
-# 🧠 Trigram Neural Net Language Model
+# 🧠Trigram Neural Net Language Model
 
 An implementation of a simple neural network-based language model, focusing on the trigram concept, inspired by the educational projects of Andrej Karpathy.
 
@@ -12,7 +12,7 @@ An implementation of a simple neural network-based language model, focusing on t
 
 ---
 
-## 📜 Project Overview
+## 📜Project Overview
 
 This repository contains a neural network model designed to learn the statistical patterns of a given sequence (characters in names). The model is specifically structured around the **trigram** concept, predicting the third element (the output) based on the preceding two elements.
 
@@ -25,7 +25,7 @@ The final output is a probability distribution over the entire vocabulary, allow
 
 ---
 
-## 💡 Context and Inspiration
+## 💡Context and Inspiration
 
 This project directly addresses a core challenge in Language Modeling: moving from **count-based n-gram models** to **dense, parameter-based neural network models**.
 
@@ -40,7 +40,7 @@ The implementation is heavily inspired by the educational materials and mini-pro
 
 ---
 
-## 🏗️ Model Architecture
+## 🏗️Model Architecture
 
 The model is an extremely simple, single-layer neural network that serves a replacement for the traditional count-based Trigram matrix.
 
@@ -74,7 +74,7 @@ The core of the model is a single weight matrix $W$.
 
 ---
  
-##💾 Data and Tokenization
+## 💾Data and Tokenization
 
 ### Data Source
 The model was trained on a dataset of approximately **32k** English names, sourced from `names.txt`.
