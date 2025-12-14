@@ -33,6 +33,7 @@ The primary inspiration for this project comes from the educational series **"Ne
    - [Model Architecture](#mlp-model-architecture)
    - [MLP Training and Evaluation](#mlp-training-and-evaluation)
    - [MLP Example Results](#mlp-example-results)
+   - [Model Initialization and Loss Baseline](#model-initialization-and-loss-baseline)
 
 ---
 
@@ -273,3 +274,38 @@ Once the model is trained, it can be used to generate new sequences (names):
 .olyn.
 .xye.
 ```
+
+---
+
+### 💡Model Initialization and Loss Baseline (E02)
+
+#### 1. Theoretical Uniform Loss
+
+The Cross-Entropy Loss (or Negative Log Likelihood) serves as the primary metric for evaluating the model. It is essential to understand the **theoretical baseline** for this loss.
+
+If the model predicts probabilities that are **perfectly uniform** across all possible next tokens (i.e., every output token has an equal chance of being selected), the theoretical loss can be calculated as follows:
+
+* **Vocabulary Size ($V$):** 27 (26 characters + 1 special token '.')
+* **Uniform Probability ($P$):** $1/V = 1/27$
+* **Cross-Entropy Loss (NLL):** $L = -\ln(P)$
+
+$$L_{\text{uniform}} = -\ln\left(\frac{1}{27}\right) \approx 3.2958$$
+
+This value, $\mathbf{3.2958}$, represents the *maximum expected starting loss* and serves as the goal for a *well-initialized* network before any learning takes place.
+
+#### 2. Comparison of Initialization Strategies
+
+| Strategy | Initialization | Starting Loss (Approx.) | Why the Difference? |
+| :--- | :--- | :--- | :--- |
+| **Original (Naive)** | `torch.randn` (default) | **$\sim 20$ to $\sim 30$** | **Large Logits:** Random weights with high variance lead to **very large** logit values. Softmax with large logits produces near-zero probabilities for most classes, resulting in extremely high loss. |
+| **Tuned (Corrected)** | Weights: `torch.randn(...) * 0.01` <br> Biases: `torch.zeros(...)` | **$\sim 3.3$** | **Near-Zero Logits:** Small weights and zero biases ensure that logits are close to zero. $\text{Softmax}(\text{Logits} \approx 0)$ yields a near-uniform distribution ($\approx 1/27$), bringing the loss close to the theoretical baseline of $3.2958$. |
+
+#### 3. The Problem with Naive Initialization
+
+When initial weights are sampled directly from `torch.randn` (Gaussian distribution with standard deviation $\sigma=1$) and biases are non-zero:
+
+1.  **Exploding Logits:** The multiplication of large random weights with the embedded inputs results in output logits (before Softmax) with **high magnitude**.
+2.  **Softmax Saturation:** Softmax ($\text{Softmax}(x) = e^x / \sum e^x$) translates these large logits into probabilities that are **extremely close to 0 or 1** (i.e., the output distribution is sharply peaked). 
+3.  **High NLL Loss:** If Softmax predicts a probability $\mathbf{P_{\text{pred}}}$ that is **near zero** for the **correct class** ($Y_{\text{true}}$), the loss becomes astronomically high, as $L = -\ln(P_{\text{pred}})$. For example, if $P_{\text{pred}} = 10^{-10}$, the resulting $-\ln(P_{\text{pred}}) \approx 23$.
+
+The tuned initialization strategy (small weights and zero biases) ensures logits start near zero, guaranteeing that Softmax produces a nearly uniform distribution, and thus, an initial loss close to the ideal $3.2958$.
