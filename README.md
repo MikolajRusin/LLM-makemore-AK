@@ -22,12 +22,12 @@ The primary inspiration for this project comes from the educational series **"Ne
 ---
 
 ## Table of Contents
-- [Trigram Neural Net](#trigram-neural-net)
+- [(Part 1) Trigram Neural Net](#trigram-neural-net)
   - [Part Overview](#part-overview)
   - [Model Architecture](#model-architecture)
   - [Data and Tokenization](#data-and-tokenization)
   - [Example Results](#example-results)
-- [MLP Language Model](#mlp-language-model)
+- [(Part 2) MLP Language Model](#mlp-language-model)
    - [Part Overview](#mlp-part-overview)
    - [What is an Embedding Layer](#what-is-an-embedding-layer)
    - [Model Architecture](#mlp-model-architecture)
